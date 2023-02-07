@@ -1,10 +1,9 @@
-var express = require('express');
-var Product = require("../models/Product");
-var router = express.Router();
+const express = require("express");
+const Product = require("../models/Product");
 
+const router = express.Router();
 
-/* GET home page. */
-router.get("/:id", (req, res) => {
+router.get("/", (req, res) => {
   Product.find()
     .then((products) => {
       res.json(products);
@@ -14,7 +13,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
-router.get('/:id', (req, res) => {
+router.get("/:id", (req, res) => {
   Product.findById(req.params.id)
     .then((product) => {
       res.json(product);
@@ -28,7 +27,8 @@ router.post("/", (req, res) => {
   const product = new Product({
     name: req.body.name,
     price: req.body.price,
-    description: req.body.description
+    description: req.body.description,
+    user: req.userId,
   });
   product.save();
   res.json(product);
@@ -38,7 +38,7 @@ router.put("/:id", (req, res) => {
   Product.findByIdAndUpdate(req.params.id, {
     name: req.body.name,
     price: req.body.price,
-    description: req.body.description
+    description: req.body.description,
   })
     .then((product) => {
       res.json(product);
